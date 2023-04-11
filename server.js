@@ -23,6 +23,11 @@ app.get('/notes', (req, res) =>
   res.sendFile(path.join(_dirname, '/public/notes.html'))
 );
 
+// Get Route for retrieving all the notes in the db.json and return all saved notes as JSON
+app.get('/api/notes', (req, res) =>
+  readFromFile('db/db.json').then((data) => res.json(JSON.parse(data)))
+);
+
 // Start the Node.js server
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT} 🚀`)
