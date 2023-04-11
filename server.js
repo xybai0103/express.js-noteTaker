@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('path');
+// Import the fsUtils functions
+const { readAndAppend, readFromFile} = require('helpers/fsUtils');
 
 const PORT = process.env.port || 3001;
 
