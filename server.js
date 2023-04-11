@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 // Import the fsUtils functions
-const { readAndAppend, readFromFile} = require('helpers/fsUtils');
+const { readAndAppend, readFromFile} = require('./helpers/fsUtils');
 // Import the uuid package to generate a unique identifier using the version 4 UUID algorithm
 const { v4: uuidv4 } = require('uuid');
 const PORT = process.env.port || 3001;
@@ -14,14 +14,14 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
-// GET (Wildcard) Route for homepage
-app.get('*', (req, res) => 
-  res.sendFile(path.json(_dirname, '/public/index.html'))
-);
-
 // Get Route for notes page
 app.get('/notes', (req, res) => 
-  res.sendFile(path.join(_dirname, '/public/notes.html'))
+  res.sendFile(path.join(__dirname, '/public/notes.html'))
+);
+
+// GET (Wildcard) Route for homepage
+app.get('/*', (req, res) => 
+  res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
 // Get Route for retrieving all the notes in the db.json and return all saved notes as JSON
@@ -42,7 +42,7 @@ app.post('/api/notes', (req, res) => {
         note_id: uuidv4(),
     };
 
-    readAndAppend(newNote, 'db/db.json');
+    readAndAppend(newNote, './db/db.json');
 
     const response = {
       status: 'success',
