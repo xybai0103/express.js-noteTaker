@@ -19,14 +19,14 @@ app.get('/notes', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
-// GET (Wildcard) Route for homepage
-app.get('/*', (req, res) => 
+// GET Route for homepage
+app.get('/', (req, res) => 
   res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
 // Get Route for retrieving all the notes in the db.json and return all saved notes as JSON
 app.get('/api/notes', (req, res) =>
-  readFromFile('db/db.json').then((data) => res.json(JSON.parse(data)))
+  readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
 );
 
 // Post Route for adding a new note
@@ -54,6 +54,11 @@ app.post('/api/notes', (req, res) => {
     res.json('Error in adding note');
   }
 });
+
+// Wildcard Route to homepage
+app.get('*', (req, res) => 
+  res.sendFile(path.join(__dirname, '/public/index.html'))
+);
 
 // Start the Node.js server
 app.listen(PORT, () =>
