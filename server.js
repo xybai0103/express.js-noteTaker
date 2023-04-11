@@ -11,3 +11,17 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
+// GET (Wildcard) Route for homepage
+app.get('*', (req, res) => 
+  res.sendFile(path.json(_dirname, '/public/index.html'))
+);
+
+// Get Route for notes page
+app.get('/notes', (req, res) => 
+  res.sendFile(path.join(_dirname, '/public/notes.html'))
+);
+
+// Start the Node.js server
+app.listen(PORT, () =>
+  console.log(`App listening at http://localhost:${PORT} 🚀`)
+);
