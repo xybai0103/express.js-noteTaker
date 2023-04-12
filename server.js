@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 // Import the fsUtils functions
-const { readAndAppend, readFromFile} = require('./helpers/fsUtils');
+const { readAndAppend, readFromFile, readAndDelete} = require('./helpers/fsUtils');
 // Import the uuid package to generate a unique identifier using the version 4 UUID algorithm
 const { v4: uuidv4 } = require('uuid');
 const PORT = process.env.PORT || 3001;
@@ -53,6 +53,11 @@ app.post('/api/notes', (req, res) => {
   } else {
     res.json('Error in adding note');
   }
+});
+
+// Delete Route for delete a note
+app.delete('/api/notes/:id', (req, res) => {
+
 });
 
 // Wildcard Route to homepage
