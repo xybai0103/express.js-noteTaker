@@ -4,7 +4,7 @@ const path = require('path');
 const { readAndAppend, readFromFile} = require('./helpers/fsUtils');
 // Import the uuid package to generate a unique identifier using the version 4 UUID algorithm
 const { v4: uuidv4 } = require('uuid');
-const PORT = process.env.port || 3001;
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 
