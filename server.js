@@ -55,9 +55,15 @@ app.post('/api/notes', (req, res) => {
   }
 });
 
-// Delete Route for delete a note
+// Delete Route for deleting a note
 app.delete('/api/notes/:id', (req, res) => {
-
+  if (req.params.id) {
+    const id = req.params.id;
+    readAndDelete(id, './db/db.json');
+    res.send(`Note with ID ${id} deleted`);
+  } else {
+    res.status(400).send('Note ID not provided');
+  }
 });
 
 // Wildcard Route to homepage
