@@ -119,8 +119,10 @@ const handleRenderSaveBtn = () => {
 };
 
 // Render the list of note titles
+// asynchronous function
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
+  // check the current path
   if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
@@ -128,6 +130,7 @@ const renderNoteList = async (notes) => {
   let noteListItems = [];
 
   // Returns HTML element with or without a delete button
+  // helper function
   const createLi = (text, delBtn = true) => {
     const liEl = document.createElement('li');
     liEl.classList.add('list-group-item');
@@ -141,6 +144,7 @@ const renderNoteList = async (notes) => {
 
     if (delBtn) {
       const delBtnEl = document.createElement('i');
+      // a trash can icon
       delBtnEl.classList.add(
         'fas',
         'fa-trash-alt',
@@ -157,17 +161,20 @@ const renderNoteList = async (notes) => {
   };
 
   if (jsonNotes.length === 0) {
+    // without delete item
     noteListItems.push(createLi('No saved Notes', false));
   }
 
   jsonNotes.forEach((note) => {
     const li = createLi(note.title);
+    // set dataset property to the JSON string of the corresponding note object
     li.dataset.note = JSON.stringify(note);
 
     noteListItems.push(li);
   });
 
   if (window.location.pathname === '/notes') {
+    // append to the first element
     noteListItems.forEach((note) => noteList[0].append(note));
   }
 };
