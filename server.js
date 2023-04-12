@@ -1,9 +1,7 @@
 const express = require('express');
 const path = require('path');
-// Import the fsUtils functions
-const { readAndAppend, readFromFile, readAndDelete} = require('./helpers/fsUtils');
-// Import the uuid package to generate a unique identifier using the version 4 UUID algorithm
-const { v4: uuidv4 } = require('uuid');
+const api = require('./routes/index.js');
+
 const PORT = process.env.PORT || 3001;
 
 const app = express();
@@ -11,6 +9,7 @@ const app = express();
 // Middleware for parsing JSON and urlencoded form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/api', api);
 
 app.use(express.static('public'));
 
@@ -23,48 +22,6 @@ app.get('/notes', (req, res) =>
 app.get('/', (req, res) => 
   res.sendFile(path.join(__dirname, '/public/index.html'))
 );
-
-// Get Route for retrieving all the notes in the db.json and return all saved notes as JSON
-app.get('/api/notes', (req, res) =>
-  readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
-);
-
-// Post Route for adding a new note
-app.post('/api/notes', (req, res) => {
-  // Destructuring assignment for the items in req.body
-  const {title, text} = req.body;
-
-  // If all the required properties are present
-  if (title && text) {
-    const newNote = {
-        title,
-        text,
-        id: uuidv4(),
-    };
-
-    readAndAppend(newNote, './db/db.json');
-
-    const response = {
-      status: 'success',
-      body: newNote,
-    };
-
-    res.json(response);
-  } else {
-    res.json('Error in adding note');
-  }
-});
-
-// Delete Route for deleting a note
-app.delete('/api/notes/:id', (req, res) => {
-  if (req.params.id) {
-    const id = req.params.id;
-    readAndDelete(id, './db/db.json');
-    res.send(`Note with ID ${id} deleted`);
-  } else {
-    res.status(400).send('Note ID not provided');
-  }
-});
 
 // Wildcard Route to homepage
 app.get('*', (req, res) => 
